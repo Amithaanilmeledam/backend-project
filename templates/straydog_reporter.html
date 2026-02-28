@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Report Case - SmartCare-StrayWatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-50">
+    <nav class="bg-white shadow p-4">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-700">SmartCare-StrayWatch</h1>
+        <div class="space-x-6 text-lg">
+          <a href="home.html">Home</a>
+          <a href="report.html" class="text-blue-600 font-bold">Report Case</a>
+          <a href="reports.html">View Reports</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-10 mt-16">
+      <h2 class="text-3xl font-bold mb-6">Report a Stray Dog Case</h2>
+
+      <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        <div>
+          <label class="block font-semibold mb-1">State</label>
+          <select
+            id="state"
+            name="state"
+            class="w-full p-3 border rounded"
+            required
+          >
+            <option value="">Select State</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">District</label>
+          <select
+            id="district"
+            name="district"
+            class="w-full p-3 border rounded"
+            required
+          >
+            <option value="">Select District</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Local Body</label>
+          <select
+            id="localBody"
+            name="localBody"
+            class="w-full p-3 border rounded"
+            required
+          >
+            <option value="">Select Local Body</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Authority</label>
+          <input
+            id="authority"
+            name="authority"
+            class="w-full p-3 border rounded bg-gray-100"
+            readonly
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Location</label>
+          <input name="location" class="w-full p-3 border rounded" required />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Area</label>
+          <input name="area" class="w-full p-3 border rounded" required />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Dog Count</label>
+          <select name="dogCount" class="w-full p-3 border rounded" required>
+            <option value="">Select Dog Count</option>
+            <option>1 Dog</option>
+            <option>2 Dogs</option>
+            <option>3-5 Dogs</option>
+            <option>6-10 Dogs</option>
+            <option>More than 10 Dogs</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Case Description</label>
+
+          <textarea
+            name="description"
+            class="w-full p-3 border rounded"
+            required
+          >
+          </textarea>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Urgency Level</label>
+          <select name="urgency" class="w-full p-3 border rounded" required>
+            <option value="">Select Urgency Level</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+            <option>Critical</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Your Name</label>
+          <input name="name" class="w-full p-3 border rounded" required />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Phone Number</label>
+          <input name="phone" class="w-full p-3 border rounded" required />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Email</label>
+          <input name="email" class="w-full p-3 border rounded" required />
+        </div>
+
+        <button
+          type="button"
+          onclick="submitReport()"
+          class="w-full bg-blue-600 text-white p-3 rounded-lg text-lg hover:bg-blue-700"
+        >
+          Submit Report
+        </button>
+      </form>
+    </div>
+
+    <script type="module">
+      import { locations } from "./js/locations.js";
+
+      const stateSel = document.getElementById("state");
+      const districtSel = document.getElementById("district");
+      const localSel = document.getElementById("localBody");
+      const authorityInput = document.getElementById("authority");
+
+      // Load states
+      Object.keys(locations).forEach((state) => {
+        stateSel.innerHTML += `<option value="${state}">${state}</option>`;
+      });
+
+      // State change
+      stateSel.onchange = () => {
+        districtSel.innerHTML = `<option value="">Select District</option>`;
+        localSel.innerHTML = `<option value="">Select Local Body</option>`;
+        authorityInput.value = "";
+
+        Object.keys(locations[stateSel.value]).forEach((d) => {
+          districtSel.innerHTML += `<option value="${d}">${d}</option>`;
+        });
+      };
+
+      // District change
+      districtSel.onchange = () => {
+        localSel.innerHTML = `<option value="">Select Local Body</option>`;
+        authorityInput.value = "";
+
+        const bodies = locations[stateSel.value][districtSel.value];
+        if (bodies) {
+          bodies.forEach((lb) => {
+            localSel.innerHTML += `<option value="${lb}">${lb}</option>`;
+          });
+        }
+      };
+
+      // Local body change
+      localSel.onchange = () => {
+        authorityInput.value = localSel.value;
+      };
+
+      // Submit function
+      window.submitReport = function () {
+        const form = document.getElementById("reportForm");
+
+        const report = {
+          state: form.state.value,
+          district: form.district.value,
+          localBody: form.localBody.value,
+          authority: form.authority.value,
+          location: form.location.value,
+          area: form.area.value,
+          dogCount: form.dogCount.value,
+          description: form.description.value,
+          urgency: form.urgency.value,
+          reporterName: form.name.value,
+          reporterPhone: form.phone.value,
+          reporterEmail: form.email.value,
+          status: "Pending",
+        };
+
+        let reports = JSON.parse(localStorage.getItem("reports")) || [];
+        reports.push(report);
+        localStorage.setItem("reports", JSON.stringify(reports));
+
+        alert("Report Submitted Successfully!");
+        form.reset();
+      };
+    </script>
+  </body>
+</html>

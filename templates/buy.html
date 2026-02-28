@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Buy Pets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          to bottom,
+          #f0f9ff 0%,
+          #fefce8 50%,
+          #f0fdf4 100%
+        );
+      }
+
+      .header {
+        background: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 20px 40px;
+      }
+
+      .title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .search-bar {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px solid #e5e7eb;
+        font-size: 14px;
+      }
+
+      .sort-select {
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px solid #e5e7eb;
+        cursor: pointer;
+      }
+
+      .main {
+        display: flex;
+        gap: 30px;
+        padding: 30px 40px;
+      }
+
+      .sidebar {
+        width: 220px;
+        background: white;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        height: fit-content;
+      }
+
+      .category-btn {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        border: none;
+        background: #f3f4f6;
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      .category-btn.active {
+        background: #3b82f6;
+        color: white;
+      }
+
+      .content {
+        flex: 1;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .card-body {
+        padding: 15px;
+      }
+
+      .price {
+        color: green;
+        font-weight: bold;
+      }
+
+      .location {
+        font-size: 13px;
+        color: gray;
+      }
+
+      .no-result {
+        text-align: center;
+        padding: 50px;
+        font-size: 18px;
+        color: gray;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="title">Buy Pets</div>
+
+      <div class="search-bar">
+        <input
+          type="text"
+          id="search"
+          class="search-input"
+          placeholder="Search by name or breed"
+        />
+        <select id="sort" class="sort-select">
+          <option value="">Sort By</option>
+          <option value="location">Location</option>
+          <option value="priceLow">Price: Low to High</option>
+          <option value="priceHigh">Price: High to Low</option>
+          <option value="recent">Recently Posted</option>
+          <option value="breed">Breed</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="sidebar">
+        <button class="category-btn active" data-category="all">
+          All Animals
+        </button>
+        <button class="category-btn" data-category="pets">🐾 Pets</button>
+        <button class="category-btn" data-category="livestock">
+          🐄 Livestock
+        </button>
+      </div>
+
+      <div class="content">
+        <div class="grid" id="petGrid"></div>
+        <div id="noResult" class="no-result" style="display: none">
+          No pets found matching your criteria
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const pets = [
+        {
+          id: 1,
+          name: "Bella",
+          breed: "Golden Retriever",
+          category: "pets",
+          price: 15000,
+          location: "Kochi",
+          datePosted: "2026-02-10",
+          image: "https://images.unsplash.com/photo-1558788353-f76d92427f16",
+        },
+        {
+          id: 2,
+          name: "Max",
+          breed: "German Shepherd",
+          category: "pets",
+          price: 18000,
+          location: "Trivandrum",
+          datePosted: "2026-02-12",
+          image: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d",
+        },
+        {
+          id: 3,
+          name: "Cow",
+          breed: "Jersey",
+          category: "livestock",
+          price: 40000,
+          location: "Kozhikode",
+          datePosted: "2026-02-08",
+          image: "https://images.unsplash.com/photo-1500595046743-cd271d694d30",
+        },
+      ];
+
+      const grid = document.getElementById("petGrid");
+      const searchInput = document.getElementById("search");
+      const sortSelect = document.getElementById("sort");
+      const categoryButtons = document.querySelectorAll(".category-btn");
+      const noResult = document.getElementById("noResult");
+
+      let selectedCategory = "all";
+
+      categoryButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          categoryButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          selectedCategory = btn.dataset.category;
+          applyFilters();
+        });
+      });
+
+      function displayPets(list) {
+        grid.innerHTML = "";
+        if (list.length === 0) {
+          noResult.style.display = "block";
+          return;
+        }
+        noResult.style.display = "none";
+
+        list.forEach((pet) => {
+          grid.innerHTML += `
+        <div class="card">
+          <img src="${pet.image}">
+          <div class="card-body">
+            <h3>${pet.name}</h3>
+            <p>${pet.breed}</p>
+            <p class="price">₹${pet.price}</p>
+            <p class="location">${pet.location}</p>
+          </div>
+        </div>
+      `;
+        });
+      }
+
+      function applyFilters() {
+        let result = [...pets];
+
+        if (selectedCategory !== "all") {
+          result = result.filter((p) => p.category === selectedCategory);
+        }
+
+        const searchText = searchInput.value.toLowerCase();
+        if (searchText) {
+          result = result.filter(
+            (p) =>
+              p.name.toLowerCase().includes(searchText) ||
+              p.breed.toLowerCase().includes(searchText),
+          );
+        }
+
+        const sortValue = sortSelect.value;
+
+        if (sortValue === "location") {
+          result.sort((a, b) => a.location.localeCompare(b.location));
+        }
+        if (sortValue === "priceLow") {
+          result.sort((a, b) => a.price - b.price);
+        }
+        if (sortValue === "priceHigh") {
+          result.sort((a, b) => b.price - a.price);
+        }
+        if (sortValue === "recent") {
+          result.sort(
+            (a, b) => new Date(b.datePosted) - new Date(a.datePosted),
+          );
+        }
+        if (sortValue === "breed") {
+          result.sort((a, b) => a.breed.localeCompare(b.breed));
+        }
+
+        displayPets(result);
+      }
+
+      searchInput.addEventListener("input", applyFilters);
+      sortSelect.addEventListener("change", applyFilters);
+
+      displayPets(pets);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      /* ===========================
+   GLOBAL
+=========================== */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+
+      .main-wrapper {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(
+          135deg,
+          #e0f2fe 0%,
+          #dbeafe 25%,
+          #fef3c7 50%,
+          #dcfce7 75%,
+          #e0f2fe 100%
+        );
+      }
+
+      /* ===========================
+   CENTER CONTENT
+=========================== */
+
+      .center-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        padding-bottom: 96px;
+      }
+
+      .container {
+        max-width: 896px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .heading-block {
+        margin-bottom: 48px;
+      }
+
+      .heading-block h1 {
+        font-size: 56px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 16px;
+      }
+
+      .heading-block h2 {
+        font-size: 48px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 24px;
+      }
+
+      .heading-block p {
+        font-size: 24px;
+        font-weight: 400;
+        color: #64748b;
+      }
+
+      /* ===========================
+   CARDS
+=========================== */
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+        margin-top: 48px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .icon-circle {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover .icon-circle {
+        transform: scale(1.1);
+      }
+
+      .icon-circle i {
+        width: 48px;
+        height: 48px;
+        color: white;
+      }
+
+      .buy-bg {
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      }
+
+      .sell-bg {
+        background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      }
+
+      .card h3 {
+        font-size: 30px;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 16px;
+      }
+
+      .card p {
+        font-size: 18px;
+        font-weight: 400;
+        color: #64748b;
+      }
+
+      /* ===========================
+   BOTTOM NAV
+=========================== */
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .nav-wrapper {
+        max-width: 448px;
+        margin: auto;
+        padding: 16px 24px;
+      }
+
+      .nav-flex {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-btn {
+        background: transparent;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 24px;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn i {
+        width: 24px;
+        height: 24px;
+        color: #6b7280;
+      }
+
+      .nav-btn span {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6b7280;
+      }
+
+      .nav-btn.active {
+        background: #eff6ff;
+      }
+
+      .nav-btn.active i,
+      .nav-btn.active span {
+        color: #3b82f6;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <div class="center-section">
+        <div class="container">
+          <div class="heading-block">
+            <h1>Find Your Perfect Companion</h1>
+            <h2>or Help One Find a Home</h2>
+            <p>
+              Choose whether you want to buy a pet or sell your pet safely
+              through our platform.
+            </p>
+          </div>
+
+          <div class="cards">
+            <!--button class="card"-->
+            <button class="card" onclick="goToBuy()">
+              <div class="card-inner">
+                <div class="icon-circle buy-bg">
+                  <i data-lucide="shopping-bag"></i>
+                </div>
+                <h3>🐾 Buy Pets</h3>
+                <p>
+                  Browse through our collection of adorable pets looking for
+                  their forever homes. Find your perfect companion today!
+                </p>
+              </div>
+            </button>
+
+            <!--button class="card"-->
+            <button class="card" onclick="goToSell()">
+              <div class="card-inner">
+                <div class="icon-circle sell-bg">
+                  <i data-lucide="store"></i>
+                </div>
+                <h3>🐕 Sell Pets</h3>
+                <p>
+                  List your pet for sale and connect with loving families. Help
+                  your pet find a caring new home safely.
+                </p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-wrapper">
+          <div class="nav-flex">
+            <button class="nav-btn active">
+              <i data-lucide="home"></i>
+              <span>Home</span>
+            </button>
+
+            <button class="nav-btn">
+              <i data-lucide="heart"></i>
+              <span>Saved</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--script>
+  lucide.createIcons();
+</script-->
+    <script>
+      lucide.createIcons();
+
+      function goToBuy() {
+        window.location.href = "buy.html";
+      }
+
+      function goToSell() {
+        window.location.href = "sell.html";
+      }
+    </script>
+  </body>
+</html>

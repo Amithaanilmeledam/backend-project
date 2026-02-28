@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>SmartCare-StrayWatch - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow p-4">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-blue-700">SmartCare-StrayWatch</h1>
+          <p class="text-sm text-gray-500">Stray Dog Management System</p>
+        </div>
+
+        <div class="space-x-6 text-lg">
+          <a href="home.html" class="text-blue-600 font-semibold">Home</a>
+          <a href="report.html">Report Case</a>
+          <a href="reports.html">View Reports</a>
+          <a href="admin-login.html" class="text-red-600 font-semibold"
+            >Admin</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="bg-blue-50 py-20">
+      <div
+        class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between"
+      >
+        <!-- LEFT -->
+        <div class="md:w-1/2">
+          <h2 class="text-5xl font-bold text-gray-800 leading-tight mb-6">
+            Helping Communities Manage <br />
+            Stray Dogs
+          </h2>
+
+          <p class="text-lg text-gray-600 mb-8">
+            SmartCare-StrayWatch assists the public, authorities, and volunteers
+            in building a safe and humane stray dog environment.
+          </p>
+
+          <a
+            href="report.html"
+            class="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg text-lg hover:bg-blue-700 transition duration-300"
+          >
+            Report a Case
+          </a>
+        </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center">
+          <!--img
+            src="images/dog.png"
+            alt="Dog"
+            class="rounded-2xl shadow-2xl w-full max-w-md object-cover hover:scale-105 transition duration-500"
+          /-->
+        </div>
+      </div>
+    </section>
+
+    <!-- STATISTICS SECTION -->
+    <section class="py-12 bg-white">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-4 gap-6 text-center">
+        <div class="bg-blue-50 p-6 rounded-xl shadow">
+          <h3 id="totalReports" class="text-3xl font-bold text-blue-600">0</h3>
+          <p class="text-gray-600 mt-2">Total Reports</p>
+        </div>
+
+        <div class="bg-yellow-50 p-6 rounded-xl shadow">
+          <h3 id="pendingReports" class="text-3xl font-bold text-yellow-600">
+            0
+          </h3>
+          <p class="text-gray-600 mt-2">Pending</p>
+        </div>
+
+        <div class="bg-green-50 p-6 rounded-xl shadow">
+          <h3 id="resolvedReports" class="text-3xl font-bold text-green-600">
+            0
+          </h3>
+          <p class="text-gray-600 mt-2">Resolved</p>
+        </div>
+
+        <div class="bg-red-50 p-6 rounded-xl shadow">
+          <h3 id="highPriorityReports" class="text-3xl font-bold text-red-600">
+            0
+          </h3>
+          <p class="text-gray-600 mt-2">High Priority</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="py-16 bg-gray-100 text-center">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-4">How It Works</h2>
+        <p class="text-gray-600 mb-12">
+          Our platform connects concerned citizens with local authorities to
+          address stray dog issues effectively.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-6 rounded-xl shadow">
+            <h3 class="text-xl font-semibold mb-2">Report the Case</h3>
+            <p class="text-gray-600">
+              Fill out the form with location, urgency, and details about the
+              stray dogs.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow">
+            <h3 class="text-xl font-semibold mb-2">Authority Notified</h3>
+            <p class="text-gray-600">
+              Your report is sent to the relevant panchayat or municipality.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow">
+            <h3 class="text-xl font-semibold mb-2">Action Taken</h3>
+            <p class="text-gray-600">
+              Local authorities will assess and take appropriate action.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORTING GUIDELINES -->
+    <section class="py-16 bg-white">
+      <div class="max-w-5xl mx-auto px-6">
+        <div
+          class="border-l-4 border-orange-500 bg-orange-50 p-8 rounded-lg shadow"
+        >
+          <h3 class="text-xl font-bold mb-4 text-orange-600">
+            Reporting Guidelines
+          </h3>
+
+          <ul class="list-disc list-inside text-gray-700 space-y-2">
+            <li>Provide accurate location information for quick response</li>
+            <li>
+              Include photos if possible to help authorities assess the
+              situation
+            </li>
+            <li>Select the appropriate urgency level honestly</li>
+            <li>
+              Keep your contact information updated for follow-up communication
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- DYNAMIC STATISTICS SCRIPT -->
+    <script>
+      window.onload = function () {
+        let reports = JSON.parse(localStorage.getItem("reports")) || [];
+
+        let total = reports.length;
+        let pending = 0;
+        let resolved = 0;
+        let highPriority = 0;
+
+        reports.forEach((r) => {
+          if (r.status === "Pending") {
+            pending++;
+          }
+
+          if (r.status === "Resolved") {
+            resolved++;
+          }
+
+          if (r.urgency === "High" || r.urgency === "Critical") {
+            highPriority++;
+          }
+        });
+
+        document.getElementById("totalReports").innerText = total;
+        document.getElementById("pendingReports").innerText = pending;
+        document.getElementById("resolvedReports").innerText = resolved;
+        document.getElementById("highPriorityReports").innerText = highPriority;
+      };
+    </script>
+  </body>
+</html>

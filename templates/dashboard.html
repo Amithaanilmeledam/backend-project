@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Smart Care | Animal Management System</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.icons.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#13ec5b",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+              alert: "#dc2626",
+              warning: "#f59e0b",
+            },
+            fontFamily: {
+              display: ["Manrope"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+     
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -5px rgba(19, 236, 91, 0.2);
+      }
+      body {
+        scroll-behavior: smooth;
+      }
+      .pulse-red {
+        animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes pulse-red {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+      
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease;
+}
+    </style>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 overflow-x-hidden"
+  >
+  
+<nav class="sticky top-0 z-50 w-full px-6 py-4">
+  <div
+        class="max-w-[1400px] mx-auto flex items-center justify-between glass-panel rounded-full px-6 py-3 shadow-lg"
+      >
+        <div class="flex items-center gap-2">
+          <div class="bg-primary p-2 rounded-lg">
+            <span class="material-icons text-white">pets</span>
+          </div>
+          <span class="text-xl font-extrabold tracking-tight text-slate-800"
+            >Smart<span class="text-primary">Care</span></span
+          >
+        </div>
+        <div class="flex items-center gap-6">
+          <div
+            class="hidden lg:flex items-center bg-white/50 rounded-full px-4 py-1.5 border border-slate-200"
+          >
+            <span class="material-icons text-slate-400 text-sm">search</span>
+           <input
+          id="searchInput"
+           name="search_services_random_123"
+            type="search"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            inputmode="search"
+            class="bg-transparent border-none focus:ring-0 text-sm w-48 xl:w-64 font-medium"
+            placeholder="Search services..."
+           />
+
+          </div>
+          <div id="searchResults" class="absolute bg-white shadow-lg rounded mt-2 w-64 hidden"></div>
+
+        <div id="authButtons" class="flex items-center gap-4">
+         <button id="signInBtn"
+         class="px-5 py-2 text-sm font-bold text-slate-700 hover:text-primary transition-colors">
+         Sign In
+         </button>
+         <button id="signUpBtn"
+         class="px-6 py-2 bg-primary text-white rounded-full text-sm font-bold shadow-md hover:shadow-lg hover:bg-emerald-500 transition-all">
+         Sign Up
+         </button>
+        </div>
+
+        <div class="relative hidden" id="accountWrapper">
+        
+        <button id="accountBtn" class="relative">
+
+            <!-- Profile Image -->
+         <img id="accountImage"
+         src=""
+         class="w-10 h-10 rounded-full object-cover hidden"
+         />
+
+    <!-- Default Icon -->
+       <span id="defaultIcon" class="text-2xl">👤</span>
+
+  </button>
+
+
+        <div id="accountDropdown"
+         class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg overflow-hidden z-50">
+
+        <div id="profileOption" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+            Profile
+        </div>
+
+        <div id="activitiesOption" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+            Activities
+        </div>
+
+        <div id="logoutOption" class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500">
+            Logout
+        </div>
+        </div>
+     </div>
+
+
+  </div>
+</div>
+ </div>
+</nav>
+    <main class="relative z-10 max-w-7xl mx-auto px-6 pt-12 pb-24">
+      <header class="text-center mb-16 space-y-4">
+        <span
+          class="bg-primary/20 text-primary px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase"
+          >All-in-one Management</span
+        >
+        <h1
+          class="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight"
+        >
+          Integrated Care for <br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-600"
+            >Every Life.</span
+          >
+        </h1>
+      </header>
+      <div class="space-y-24">
+        <section>
+          <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-1.5 h-8 bg-primary rounded-full"></div>
+              <h2 class="text-2xl font-bold text-slate-800">Pet Management</h2>
+            </div>
+           
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="glass-panel rounded-xl p-6 card-hover transition-all cursor-pointer group"
+                          data-protected="true"
+                          data-redirect="{% url 'buy_sell_home' %}">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                          <span class="material-icons text-blue-600">storefront</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800">Buy/Sell</h3>
+                        <p class="text-sm text-slate-500 mt-2">
+                          Marketplace for animals &amp; supplies
+                        </p>
+                      </div>
+
+
+            <div
+              class="glass-panel rounded-xl p-6 card-hover transition-all cursor-pointer group" data-protected="true"
+     data-redirect="Records-home.html"
+            >
+              <div
+                class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
+              >
+                <span class="material-icons text-amber-600">My Pet</span>
+              </div>
+              <h3 class="font-bold text-slate-800">Digital Records</h3>
+              <p class="text-sm text-slate-500 mt-2">
+                Vaccination &amp; growth history
+              </p>
+            </div>
+            <div
+              class="glass-panel rounded-xl p-6 card-hover transition-all cursor-pointer group" data-protected="true"
+     data-redirect="shelters-home.html"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
+              >
+                <span class="material-icons text-purple-600">home</span>
+              </div>
+              <h3 class="font-bold text-slate-800">Shelters</h3>
+              <p class="text-sm text-slate-500 mt-2">
+                Find or host rescue spaces and find home for your pet while you Travel
+              </p>
+            </div>
+            <div
+              class="glass-panel rounded-xl p-6 card-hover transition-all cursor-pointer group" data-protected="true"
+     data-redirect="Trainer-home.html"
+            >
+              <div
+                class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
+              >
+                <span class="material-icons text-indigo-600">Grooming</span>
+              </div>
+              <h3 class="font-bold text-slate-800">Grooming</h3>
+              <p class="text-sm text-slate-500 mt-2">
+                Find nearby grooming centers
+              </p>
+            </div>
+          </div>
+        </section>
+        
+        <section class="flex justify-center">
+          <div
+            class="w-full max-w-5xl bg-white/100 backdrop-blur-md border-4 border-alert rounded-4xl shadow-xl overflow-hidden relative"
+          >
+            <div
+              class="bg-alert text-white px-6 py-2 flex items-center justify-between"
+            >
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined pulse-red text-xl"
+                  >fmd_bad</span
+                >
+                <span class="font-black uppercase tracking-wider text-sm"
+                  >Live Stray Alert</span
+                >
+              </div>
+              <span class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full"
+                >12 ACTIVE INCIDENTS TODAY</span
+              >
+            </div>
+            <div class="p-6 flex flex-col lg:flex-row items-center gap-6">
+              <div class="flex-shrink-0 relative">
+                <div
+                  class="w-16 h-16 bg-alert/10 rounded-2xl flex items-center justify-center border-2 border-alert/20"
+                >
+                  <span class="material-symbols-outlined text-alert text-3xl"
+                    >location_searching</span
+                  >
+                </div>
+              </div>
+              <div class="flex-grow text-center lg:text-left space-y-2">
+                <h2
+                  class="text-xl font-black text-slate-900 leading-tight flex items-center justify-center lg:justify-start gap-2"
+                >
+                  Stray Dog Activity Reported
+                  <span
+                    class="bg-warning/10 text-warning px-2 py-0.5 rounded text-[10px] uppercase font-black border border-warning/30"
+                    >High Risk</span
+                  >
+                </h2>
+                <p class="text-slate-600 text-sm font-bold leading-snug">
+                  Recent <span class="text-alert">aggressive behavior</span> and
+                  <span class="text-alert">multiple bites</span> in downtown.
+                  Exercise extreme caution.
+                </p>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+               <button id="reportIncidentBtn"
+                        class="bg-alert hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-alert/30 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                        data-protected="true"
+                        data-redirect="{% url 'straydog_report_home' %}">
+                    <span class="material-symbols-outlined text-xl">campaign</span>
+                    Report Incident
+                </button>
+
+                <button
+                  class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                >
+                  <span class="material-symbols-outlined text-xl">map</span>
+                  Live Map
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-1.5 h-8 bg-amber-700 rounded-full"></div>
+            <h2 class="text-2xl font-bold text-slate-800">
+              Farming &amp; Livestock
+            </h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div
+              class="glass-panel rounded-xl p-6 flex items-start gap-4 card-hover transition-all cursor-pointer" data-protected="true"
+     data-redirect="Livestock-care-home.html"
+            >
+              <div class="bg-stone-100 p-3 rounded-lg">
+                <span class="material-icons text-stone-600">agriculture</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-800">Livestock Care</h4>
+                <p class="text-xs text-slate-500 mt-1">
+                  Large animal management
+                </p>
+              </div>
+            </div>
+            <div
+              class="glass-panel rounded-xl p-6 flex items-start gap-4 card-hover transition-all cursor-pointer"
+            >
+              <div class="bg-lime-100 p-3 rounded-lg">
+                <span class="material-icons text-lime-700">Records</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-800">Keep records</h4>
+                <p class="text-xs text-slate-500 mt-1">
+                  Growth and medical records
+                </p>
+              </div>
+            </div>
+            <div
+              class="glass-panel rounded-xl p-6 flex items-start gap-4 card-hover transition-all cursor-pointer"
+            >
+              <div class="bg-green-100 p-3 rounded-lg">
+                <span class="material-icons text-green-700">Disease Alert</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-800">Alert</h4>
+                <p class="text-xs text-slate-500 mt-1">Disease reports</p>
+              </div>
+         
+        </section>
+        <section class="pb-20">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-1.5 h-8 bg-pink-500 rounded-full"></div>
+            <h2 class="text-2xl font-bold text-slate-800">
+              Memories
+            </h2>
+          </div>
+          
+            <div
+  class="relative overflow-hidden rounded-2xl h-96 w-full md:w-[600px] mx-auto group cursor-pointer shadow-xl ring-1 ring-black/5 hover:ring-primary/40 transition-all"
+  data-protected="true"
+  data-redirect="Memory-home.html"
+>
+
+              <img
+                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgUQGMF9F8LGCExek8XUXLKOfPP8v6p4BmPDKDOlVu0-h4DBVLFofd_5Pm33J4ZB9E1XxbNR-NoygPcQWaTsuICpUa0bgGfImeq91UWZVkFBgq7zFQXNgTASOJLwZHXB2CgzMJ1Rukj7tiNrtamil_-gLk1GXzfb1QORxKETsVmartgKDxyEVA_wo9X4gdj5DuX4zEY19vBsDnyCR1UtT2sGZ4Z9nV1HCSaPOFzf05pUywNXSCroNEIUklwdm4FpHTXmyNACREzU0"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/50 to-transparent flex flex-col justify-end p-8"
+              >
+                <div class="mb-3">
+                  <span
+                    class="bg-rose-500 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-widest"
+                    >Personalized</span
+                  >
+                </div>
+                <h3 class="text-3xl text-white font-extrabold mb-2">
+                  Memory Album
+                </h3>
+                <p class="text-white/80 text-base font-medium">
+                  Create a digital legacy of your pet's life
+                </p>
+                <div
+                  class="mt-6 flex items-center text-rose-400 font-bold text-sm"
+                >
+                  Start Creating
+                  <span class="material-icons text-sm ml-1">arrow_forward</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer
+      class="relative z-10 glass-panel border-t border-white/40 mt-12 py-10"
+    >
+      <div
+        class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8"
+      >
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <div class="bg-primary p-1.5 rounded-lg">
+              <span class="material-icons text-white text-sm">pets</span>
+            </div>
+            <span class="text-lg font-bold text-slate-800">SmartCare</span>
+          </div>
+          <p class="text-slate-500 text-sm max-w-xs">
+            Building a safer, healthier world for every animal through
+            technology and community.
+          </p>
+        </div>
+        <div class="flex gap-12">
+          <div class="space-y-2">
+            <h5
+              class="font-bold text-slate-800 uppercase text-xs tracking-wider"
+            >
+              Resources
+            </h5>
+            <ul class="text-sm text-slate-500 space-y-1">
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Emergency Aid</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Vet Directory</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#">FAQ</a>
+              </li>
+            </ul>
+          </div>
+          <div class="space-y-2">
+            <h5
+              class="font-bold text-slate-800 uppercase text-xs tracking-wider"
+            >
+              Company
+            </h5>
+            <ul class="text-sm text-slate-500 space-y-1">
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Sustainability</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Privacy Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+      <div
+        class="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-slate-200 text-center text-xs text-slate-400"
+      >
+        © 2024 Smart Care Animal Management. All rights reserved.
+      </div>
+    </footer>
+   
+    </div>
+  
+<!-- ================= LOGIN MODAL ================= -->
+<div id="loginModal"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+
+  <div class="bg-white w-96 rounded-2xl shadow-2xl p-8 relative animate-fadeIn">
+
+    <button id="closeLoginModal"
+      class="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition">
+      ✕
+    </button>
+
+    <h2 class="text-2xl font-bold mb-6 text-slate-800 text-center">
+      Sign In
+    </h2>
+
+       <form id="loginForm" method="POST" action="/login/">
+       {% csrf_token %}
+
+    <input type="email"
+           name="email"
+           id="loginEmail"
+           placeholder="Email"
+           class="w-full mb-2 p-2 border rounded"
+           required>
+
+    <input type="password"
+           name="password"
+           id="loginPassword"
+           placeholder="Password"
+           class="w-full mb-2 p-2 border rounded"
+           required>
+
+    
+    <button id="modalLoginBtn"
+      class="w-full py-3 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition">
+      Login
+    </button>
+
+</form>
+
+
+
+  </div>
+</div>
+<div id="signupModal"
+     class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+
+  <div class="bg-white p-6 rounded-lg w-96 relative">
+
+    <button id="closeSignupModal"
+      class="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition">
+      ✕
+    </button>
+
+    <h2 class="text-xl font-bold mb-4">Sign Up</h2>
+
+    <!-- ADD FORM TAG -->
+    <form id="signupForm" method="POST" action="/signup/">
+    {% csrf_token %}
+
+    <input type="email"
+           name="email"
+           id="signupEmail"
+           placeholder="Email"
+           class="w-full mb-2 p-2 border rounded"
+           required>
+
+    <input type="password"
+           name="password"
+           id="signupPassword"
+           placeholder="Create Password"
+           class="w-full mb-2 p-2 border rounded"
+           required>
+
+
+      <input type="text"
+             id="signupPhone"
+             name="phone"
+             placeholder="Phone (Optional)"
+             class="w-full mb-2 p-2 border rounded">
+
+      <label for="signupPhoto"
+             class="block text-sm font-medium text-slate-700 mb-1">
+        Upload Profile Picture
+      </label>
+
+      <input type="file"
+             id="signupPhoto"
+             name="photo"
+             accept="image/*"
+             class="w-full mb-3 p-2 border rounded cursor-pointer">
+
+      <button type="button" id="signupBtn"
+              class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
+        Sign Up
+      </button>
+
+    </form>
+
+    <p class="text-sm mt-3">
+      Already have an account?
+      <span id="goToSignin"
+            class="text-indigo-600 cursor-pointer">
+        Sign In
+      </span>
+    </p>
+
+  </div>
+</div>
+
+ 
+<script>
+
+/* ================= ELEMENTS ================= */
+
+const loginModal = document.getElementById("loginModal");
+const signupModal = document.getElementById("signupModal");
+
+const signInBtn = document.getElementById("signInBtn");
+/*const signUpBtn = document.getElementById("signUpBtn");*/
+
+const closeLoginModal = document.getElementById("closeLoginModal");
+const closeSignupModal = document.getElementById("closeSignupModal");
+const modalLoginBtn = document.getElementById("modalLoginBtn");
+
+const authButtons = document.getElementById("authButtons");
+const accountWrapper = document.getElementById("accountWrapper");
+const accountBtn = document.getElementById("accountBtn");
+const accountDropdown = document.getElementById("accountDropdown");
+
+const profileOption = document.getElementById("profileOption");
+const logoutOption = document.getElementById("logoutOption");
+
+const profileSection = document.getElementById("profileSection");
+
+const signupBtn = document.getElementById("signupBtn");
+const goToSignin = document.getElementById("goToSignin");
+
+/* ================= AUTH CHECK ================= */
+
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem("smartcare_user"));
+  const accountImage = document.getElementById("accountImage");
+  const defaultIcon = document.getElementById("defaultIcon");
+
+  if (user) {
+    authButtons.classList.add("hidden");
+    accountWrapper.classList.remove("hidden");
+    if (user.profilePic) {
+      accountImage.src = user.profilePic;
+      accountImage.classList.remove("hidden");
+      defaultIcon.classList.add("hidden");
+    } else {
+      accountImage.classList.add("hidden");
+      defaultIcon.classList.remove("hidden");
+    }
+  } else {
+    authButtons.classList.remove("hidden");
+    accountWrapper.classList.add("hidden");
+  }
+}
+
+checkAuth();
+
+/* ================= MODALS ================= */
+
+function openLogin() {
+  loginModal.classList.remove("hidden");
+  loginModal.classList.add("flex");
+}
+
+function closeLogin() {
+  loginModal.classList.add("hidden");
+  loginModal.classList.remove("flex");
+}
+
+function openSignup() {
+  signupModal.classList.remove("hidden");
+  signupModal.classList.add("flex");
+}
+
+function closeSignup() {
+  signupModal.classList.add("hidden");
+  signupModal.classList.remove("flex");
+}
+
+signInBtn?.addEventListener("click", openLogin);
+signUpBtn?.addEventListener("click", openSignup);
+closeLoginModal?.addEventListener("click", closeLogin);
+closeSignupModal?.addEventListener("click", closeSignup);
+
+goToSignin?.addEventListener("click", () => {
+  closeSignup();
+  openLogin();
+});
+
+/* ================= SIGN UP (BACKEND) ================= */
+
+signupBtn?.addEventListener("click", async (e) => {
+  e.preventDefault();   // VERY IMPORTANT
+
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value.trim();
+  const phone = document.getElementById("signupPhone").value.trim();
+
+  if (!email || !password) {
+    alert("Please fill required fields");
+    return;
+  }
+
+  try {
+    const response = await fetch("/signup/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        phone: phone
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+
+      localStorage.setItem("smartcare_user", JSON.stringify({
+        email: email
+      }));
+
+      alert("Account created successfully!");
+      closeSignup();
+      checkAuth();
+
+    } else {
+      alert(data.error || "Signup failed");
+    }
+
+  } catch (error) {
+    alert("Server error. Try again.");
+    console.error(error);
+  }
+});
+
+
+/* ================= SIGN IN (BACKEND) ================= */
+
+modalLoginBtn?.addEventListener("click", async () => {
+
+  document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    fetch("/login/", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success){
+            localStorage.setItem("smartcare_user", "true");
+            updateUIAfterLogin();
+            /*window.location.href = "/dashboard/";*/
+        } else {
+            alert("Invalid credentials");
+        }
+    });
+});
+});
+
+function updateUIAfterLogin(){
+    document.getElementById("authButtons").innerHTML = `
+        <div class="flex items-center gap-3">
+            <span class="text-green-600 font-semibold">My Account</span>
+        </div>
+    `;
+
+    document.getElementById("loginModal").classList.add("hidden");
+}
+
+/* ================= LOGOUT ================= */
+
+logoutOption?.addEventListener("click", () => {
+  localStorage.removeItem("smartcare_user");
+  alert("Logged out successfully");
+  location.reload();
+});
+
+/* ================= ACCOUNT DROPDOWN ================= */
+
+accountBtn?.addEventListener("click", () => {
+  accountDropdown.classList.toggle("hidden");
+});
+
+/* ================= PROFILE ================= */
+
+profileOption?.addEventListener("click", () => {
+  const user = JSON.parse(localStorage.getItem("smartcare_user"));
+  if (!user) return;
+
+  document.getElementById("profileEmail").textContent = user.email;
+  profileSection.classList.toggle("hidden");
+});
+
+/* ================= PROTECTED CARDS ================= */
+const cards = document.querySelectorAll("[data-redirect]");
+
+cards.forEach(card => {
+  card.addEventListener("click", () => {
+
+    const isProtected = card.dataset.protected === "true";
+    const redirectPage = card.dataset.redirect;
+    const user = localStorage.getItem("smartcare_user");
+
+    if (isProtected && !user) {
+      openLogin();
+    } else {
+      window.location.href = redirectPage;
+    }
+
+  });
+});
+
+/*======= REPORT INCIDENT ================= */
+
+const reportIncidentBtn = document.getElementById("reportIncidentBtn");
+
+reportIncidentBtn?.addEventListener("click", () => {
+  const user = localStorage.getItem("smartcare_user");
+
+  if (!user) {
+    openLogin();
+    return;
+  }
+
+  window.location.href = "report-incident.html";
+});
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+
+const services = [
+  { name: "Report Incident", link: "report-incident.html" },
+  { name: "Medical Help", link: "medical.html" },
+  { name: "Buy and sell", link: "Buy-sell-home.html" },
+  { name: "Profile", link: "#" }
+];
+
+searchInput?.addEventListener("input", function () {
+
+  const query = this.value.trim().toLowerCase();
+
+  searchResults.innerHTML = "";
+
+  if (query === "") {
+    searchResults.classList.add("hidden");
+    return;
+  }
+
+  const filtered = services.filter(service =>
+    service.name.toLowerCase().includes(query)
+  );
+
+  if (filtered.length === 0) {
+    searchResults.classList.add("hidden");
+    return;
+  }
+
+  filtered.forEach(service => {
+    const item = document.createElement("div");
+    item.textContent = service.name;
+    item.className = "p-2 hover:bg-gray-100 cursor-pointer";
+
+    item.addEventListener("click", () => {
+      window.location.href = service.link;
+    });
+
+    searchResults.appendChild(item);
+  });
+
+  searchResults.classList.remove("hidden");
+});
+
+</script>
+
+
+  </body>
+</html>

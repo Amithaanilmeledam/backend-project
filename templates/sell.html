@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sell Pets</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          to bottom,
+          #fef3c7 0%,
+          #fde68a 50%,
+          #fef3c7 100%
+        );
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 32px 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 0 24px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .back-btn {
+        padding: 8px;
+        border-radius: 8px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .title {
+        font-size: 32px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .form-box {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        padding: 32px;
+      }
+
+      .form-group {
+        margin-bottom: 24px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #374151;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 2px solid #e5e7eb;
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        outline: none;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: #60a5fa;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      .upload-box {
+        border: 2px dashed #d1d5db;
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        background: #f9fafb;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .upload-box:hover {
+        border-color: #60a5fa;
+        background: #eff6ff;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        border: none;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        transition: 0.3s;
+      }
+
+      .submit-btn:hover {
+        transform: scale(1.02);
+      }
+
+      .success-page {
+        min-height: 100vh;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      }
+
+      .success-box {
+        background: white;
+        border-radius: 24px;
+        padding: 48px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        max-width: 400px;
+      }
+
+      .success-box h2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .success-box p {
+        color: #6b7280;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="success-page" id="successPage">
+      <div class="success-box">
+        <h2>Successfully Posted!</h2>
+        <p>Your pet listing has been submitted successfully. Redirecting...</p>
+      </div>
+    </div>
+
+    <div class="page" id="formPage">
+      <div class="container">
+        <div class="header">
+          <button class="back-btn" onclick="history.back()">←</button>
+          <div class="title">Post Your Pet for Sale</div>
+        </div>
+
+        <form class="form-box" id="sellForm">
+          <div class="form-group">
+            <label>Category *</label>
+            <select name="category" required>
+              <option value="pets">Pets</option>
+              <option value="livestock">Livestock</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Breed *</label>
+            <input
+              type="text"
+              name="breed"
+              required
+              placeholder="e.g., Golden Retriever"
+            />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Age *</label>
+              <input
+                type="text"
+                name="age"
+                required
+                placeholder="e.g., 2 years"
+              />
+            </div>
+            <div class="form-group">
+              <label>Price (₹) *</label>
+              <input
+                type="number"
+                name="price"
+                required
+                placeholder="e.g., 25000"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Pet Name</label>
+            <input
+              type="text"
+              name="petName"
+              placeholder="e.g., Max (optional)"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Medical History *</label>
+            <textarea
+              name="medicalHistory"
+              rows="4"
+              required
+              placeholder="Provide details about vaccinations, health checkups, etc."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Owner Name *</label>
+            <input
+              type="text"
+              name="ownerName"
+              required
+              placeholder="Your full name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Contact Number *</label>
+            <input
+              type="tel"
+              name="contactNumber"
+              required
+              placeholder="+91 98765 43210"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Location *</label>
+            <input
+              type="text"
+              name="location"
+              required
+              placeholder="e.g., Kochi, Kerala"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Upload Pet Photo *</label>
+            <input type="file" id="photo" required style="display: none" />
+            <label for="photo" class="upload-box" id="uploadLabel">
+              Click to upload photo
+            </label>
+          </div>
+
+          <button type="submit" class="submit-btn">Post for Sale</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("sellForm");
+      const successPage = document.getElementById("successPage");
+      const formPage = document.getElementById("formPage");
+      const photoInput = document.getElementById("photo");
+      const uploadLabel = document.getElementById("uploadLabel");
+
+      photoInput.addEventListener("change", function () {
+        if (photoInput.files.length > 0) {
+          uploadLabel.innerText = photoInput.files[0].name;
+        }
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        formPage.style.display = "none";
+        successPage.style.display = "flex";
+
+        setTimeout(() => {
+          successPage.style.display = "none";
+          formPage.style.display = "block";
+          form.reset();
+          uploadLabel.innerText = "Click to upload photo";
+        }, 3000);
+      });
+    </script>
+  </body>
+</html>
