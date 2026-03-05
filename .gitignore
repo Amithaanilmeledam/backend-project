@@ -1,3 +1,5 @@
 db.sqlite3
 *.zip
 venv/
+_pycache_/
+*.pyc
